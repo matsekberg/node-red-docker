@@ -1,4 +1,4 @@
-ARG NODE_VERSION=6
+A../RG NODE_VERSION=6
 FROM node:${NODE_VERSION}
 
 # Home directory for Node-RED application source code.
@@ -17,7 +17,7 @@ RUN useradd --home-dir /usr/src/node-red --no-create-home node-red \
 USER node-red
 
 # package.json contains Node-RED NPM module and node dependencies
-COPY package.json /usr/src/node-red/
+COPY ../package.json /usr/src/node-red/
 RUN npm install
 
 # User configuration directory volume
