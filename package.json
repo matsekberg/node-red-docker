@@ -33,7 +33,9 @@
         "node-red-contrib-homekit-bridged": "*",
         "node-red-contrib-huemagic": "*",
         "node-red-contrib-influxdb": "*",
-        "node-red-node-pushover": "*"
+        "node-red-node-pushover": "*",
+        "node-red-contrib-ui": "*",
+        "node-red-contrib-light-scheduler": "*"
     },
     "engines": {
         "node": "4.*.*"
