@@ -34,10 +34,10 @@
         "node-red-contrib-huemagic": "*",
         "node-red-contrib-influxdb": "*",
         "node-red-node-pushover": "*",
-        "node-red-contrib-ui": "*",
+        "node-red-dashboard": "*",
         "node-red-contrib-light-scheduler": "*"
     },
     "engines": {
-        "node": "4.*.*"
+        "node": "6.*.*"
     }
 }
