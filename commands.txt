@@ -1,0 +1,1 @@
+docker build -f Dockerfile-latest --tag matsekberg/node-red-docker:latest .
