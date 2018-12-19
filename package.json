@@ -6,7 +6,7 @@
     "license": "Apache-2.0",
     "repository": {
         "type": "git",
-        "url": "https://github.com/node-red/node-red-docker.git"
+        "url": "https://github.com/matsekberg/node-red-docker.git"
     },
     "main": "node_modules/node-red/red/red.js",
     "scripts": {
@@ -14,13 +14,7 @@
     },
     "contributors": [
         {
-            "name": "Dave Conway-Jones"
-        },
-        {
-            "name": "Nick O'Leary"
-        },
-        {
-            "name": "James Thomas"
+            "name": "Mats Ekberg"
         }
     ],
     "dependencies": {

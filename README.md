@@ -7,12 +7,12 @@ Some basic familiarity with Docker and the
 [Docker Command Line](https://docs.docker.com/engine/reference/commandline/cli/)
 is assumed.
 
-This project also provides the build for the `nodered/node-red-docker`
-container on [DockerHub](https://hub.docker.com/r/nodered/node-red-docker/).
+This project also provides the build for the `matsekberg/node-red-docker`
+container on [DockerHub](https://hub.docker.com/r/matsekberg/node-red-docker/).
 
 To run this directly in docker at it's simplest just run
 
-        docker run -it -p 1880:1880 --name mynodered nodered/node-red-docker
+        docker run -it -p 1880:1880 --name mynodered matsekberg/node-red-docker
 
 Let's dissect that command...
 
@@ -20,7 +20,7 @@ Let's dissect that command...
         -it             - attach a terminal session so we can see what is going on
         -p 1880:1880    - connect local port 1880 to the exposed internal port 1880
         --name mynodered - give this machine a friendly local name
-        nodered/node-red-docker - the image to base it on - currently Node-RED v0.14.5
+        matsekberg/node-red-docker - the image to base it on - currently Node-RED v0.14.5
 
 
 Running that command should give a terminal window with a running instance of Node-RED
@@ -77,7 +77,7 @@ Additional images using a newer Node.js v8 base image are now available with the
 Node-RED releases are also tagged with a version label, allowing you to fix on a specific version: `latest:X.Y.Z`, 
 `slim:X.Y.Z`, `rpi:X.Y.Z`.
 
-You can see a full list of the tagged releases [here](https://hub.docker.com/r/nodered/node-red-docker/tags/).
+You can see a full list of the tagged releases [here](https://hub.docker.com/r/matsekberg/node-red-docker/tags/).
 
 ## Project Layout
 
@@ -118,13 +118,13 @@ The flows configuration file is set using an environment parameter (**FLOWS**),
 which defaults to *'flows.json'*. This can be changed at runtime using the
 following command-line flag.
 
-        $ docker run -it -p 1880:1880 -e FLOWS=my_flows.json nodered/node-red-docker
+        $ docker run -it -p 1880:1880 -e FLOWS=my_flows.json matsekberg/node-red-docker
 
 Node.js runtime arguments can be passed to the container using an environment
 parameter (**NODE_OPTIONS**). For example, to fix the heap size used by
 the Node.js garbage collector you would use the following command.
 
-        $ docker run -it -p 1880:1880 -e NODE_OPTIONS="--max_old_space_size=128" nodered/node-red-docker
+        $ docker run -it -p 1880:1880 -e NODE_OPTIONS="--max_old_space_size=128" matsekberg/node-red-docker
 
 ## Adding Nodes
 
@@ -172,7 +172,7 @@ This command mounts the host's node-red directory, containing the user's
 configuration and installed nodes, as the user configuration directory inside
 the container. 
 
-        $ docker run -it -p 1880:1880 -v ~/.node-red:/data --name mynodered nodered/node-red-docker
+        $ docker run -it -p 1880:1880 -v ~/.node-red:/data --name mynodered matsekberg/node-red-docker
 
 _**Having file permissions issues after mounting a host directory?**_
 _Docker maps the internal container uuid to 1000 on the host system. If you are running as a user with a different uuid, e.g. the second user added on a system, the container user account won't be able to read files on the host system. Fix this by using the `--run $USER` flag. See [here for more details](https://github.com/node-red/node-red-docker/issues/9)._
@@ -201,7 +201,7 @@ This Dockerfile builds a custom Node-RED image with the flightaware module
 installed from NPM.
 
 ```
-FROM nodered/node-red-docker
+FROM matsekberg/node-red-docker
 RUN npm install node-red-contrib-flightaware
 ```
 
@@ -251,19 +251,19 @@ container using this volume.
         $ docker volume ls
         DRIVER              VOLUME NAME
         local               node_red_user_data
-        $ docker run -it -p 1880:1880 -v node_red_user_data:/data --name mynodered nodered/node-red-docker
+        $ docker run -it -p 1880:1880 -v node_red_user_data:/data --name mynodered matsekberg/node-red-docker
 
 Using Node-RED to create and deploy some sample flows, we can now destroy the
 container and start a new instance without losing our user data.
 
         $ docker rm mynodered
-        $ docker run -it -p 1880:1880 -v node_red_user_data:/data --name mynodered nodered/node-red-docker
+        $ docker run -it -p 1880:1880 -v node_red_user_data:/data --name mynodered matsekberg/node-red-docker
 
 ## Updating
 
 Updating the base container image is as simple as
 
-        $ docker pull nodered/node-red-docker
+        $ docker pull matsekberg/node-red-docker
         $ docker stop mynodered
         $ docker start mynodered
 
@@ -271,14 +271,14 @@ Updating the base container image is as simple as
 
 The barest minimum we need to just run Node-RED is
 
-    $ docker run -d -p 1880 nodered/node-red-docker
+    $ docker run -d -p 1880 matsekberg/node-red-docker
 
 This will create a local running instance of a machine - that will have some
 docker id number and be running on a random port... to find out run
 
     $ docker ps -a
     CONTAINER ID        IMAGE                       COMMAND             CREATED             STATUS                     PORTS                     NAMES
-    4bbeb39dc8dc        nodered/node-red-docker:latest   "npm start"         4 seconds ago       Up 4 seconds               0.0.0.0:49154->1880/tcp   furious_yalow
+    4bbeb39dc8dc        matsekberg/node-red-docker:latest   "npm start"         4 seconds ago       Up 4 seconds               0.0.0.0:49154->1880/tcp   furious_yalow
     $
 
 You can now point a browser to the host machine on the tcp port reported back, so in the example
@@ -290,13 +290,13 @@ You can link containers "internally" within the docker runtime by using the --li
 
 For example I have a simple MQTT broker container available as
 
-        docker run -it --name mybroker nodered/node-red-docker
+        docker run -it --name mybroker matsekberg/node-red-docker
 
 (no need to expose the port 1883 globally unless you want to... as we do magic below)
 
 Then run nodered docker - but this time with a link parameter (name:alias)
 
-        docker run -it -p 1880:1880 --name mynodered --link mybroker:broker nodered/node-red-docker
+        docker run -it -p 1880:1880 --name mynodered --link mybroker:broker matsekberg/node-red-docker
 
 the magic here being the `--link` that inserts a entry into the node-red instance
 hosts file called *broker* that links to the mybroker instance....  but we do
@@ -319,7 +319,7 @@ Here is a list of common issues users have reported with possible solutions.
 If you are seeing *permission denied* errors opening files or accessing host devices, try running the container as the root user. 
 
 ```
-docker run -it -p 1880:1880 --name mynodered --user=root nodered/node-red-docker
+docker run -it -p 1880:1880 --name mynodered --user=root matsekberg/node-red-docker
 ```
 
 References: 
@@ -333,7 +333,7 @@ https://github.com/node-red/node-red-docker/issues/8
 If you want to access a device from the host inside the container, e.g. serial port, use the following command-line flag to pass access through. 
 
 ```
-docker run -it -p 1880:1880 --name mynodered --device=/dev/ttyACM0 nodered/node-red-docker
+docker run -it -p 1880:1880 --name mynodered --device=/dev/ttyACM0 matsekberg/node-red-docker
 ```
 References:
 https://github.com/node-red/node-red-docker/issues/15
@@ -343,7 +343,7 @@ https://github.com/node-red/node-red-docker/issues/15
 If you want to modify the default timezone, use the TZ environment variable with the [relevant timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
 
 ```
-docker run -it -p 1880:1880 --name mynodered -e TZ="Europe/London" nodered/node-red-docker
+docker run -it -p 1880:1880 --name mynodered -e TZ="Europe/London" matsekberg/node-red-docker
 ```
 
 References:
